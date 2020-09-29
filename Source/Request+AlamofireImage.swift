@@ -34,7 +34,7 @@ import WatchKit
 import Cocoa
 #endif
 
-public final class ImageResponseSerializer: ResponseSerializer {
+open class ImageResponseSerializer: ResponseSerializer {
     // MARK: Properties
 
     public static var deviceScreenScale: CGFloat { DataRequest.imageScale }
@@ -73,7 +73,7 @@ public final class ImageResponseSerializer: ResponseSerializer {
 
     // MARK: Serialization
 
-    public func serialize(request: URLRequest?, response: HTTPURLResponse?, data: Data?, error: Error?) throws -> Image {
+    open func serialize(request: URLRequest?, response: HTTPURLResponse?, data: Data?, error: Error?) throws -> Image {
         guard error == nil else { throw error! }
 
         guard let data = data, !data.isEmpty else {
@@ -91,7 +91,7 @@ public final class ImageResponseSerializer: ResponseSerializer {
         return image
     }
 
-    public func serializeImage(from data: Data) throws -> Image {
+    open func serializeImage(from data: Data) throws -> Image {
         guard !data.isEmpty else {
             throw AFError.responseSerializationFailed(reason: .inputDataNilOrZeroLength)
         }
@@ -119,11 +119,11 @@ public final class ImageResponseSerializer: ResponseSerializer {
     /// Adds the content types specified to the list of acceptable images content types for validation.
     ///
     /// - parameter contentTypes: The additional content types.
-    public class func addAcceptableImageContentTypes(_ contentTypes: Set<String>) {
+    open class func addAcceptableImageContentTypes(_ contentTypes: Set<String>) {
         ImageResponseSerializer.acceptableImageContentTypes.formUnion(contentTypes)
     }
 
-    public func validateContentType(for request: URLRequest?, response: HTTPURLResponse?) throws {
+    open func validateContentType(for request: URLRequest?, response: HTTPURLResponse?) throws {
         if let url = request?.url, url.isFileURL { return }
 
         guard let mimeType = response?.mimeType else {
